@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+
+# Logs / scratch
+*.log
+
+# AI Agents
+AGENTS.md
+.agents/
+.codex/
+.gemini/
+.copilot/

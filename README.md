@@ -1,0 +1,59 @@
+# TestMate Meta
+
+`testmate` 家族的跨 repo 工作入口，用來整理多個獨立專案的共同脈絡。
+
+> 本層走共用的 `*-meta` git ceremony 提交（subject-only commit）。
+
+
+
+## 為什麼需要這一層
+
+- **保留獨立 repo 的協調方式**：
+  - 成員可能需要一起修改，同時仍需保留各自獨立連結、發佈與維護的能力
+  - meta 層只整理共同脈絡，不改變各成員 repo 的獨立生命週期
+- **集中跨 repo 脈絡**：
+  - 在這裡工作時可以同時參考所有成員，並依共用規範處理
+  - 若僅從單一成員內部進行修改，可能忽略其他成員所需的連動調整
+- **可複用的架構**：
+  - 「一個 meta 層協調 N 個獨立 repo」也適用於其他互相牽動的 repo
+
+
+
+## 專案組成
+
+這是一組**混合家族**：成員類型不同，依擁有者或主題集中管理。各成員的結構可能不同；修改前應先閱讀各自的 `README.md`，下表僅作為索引。
+
+| repo | 用途 | 路徑 |
+|---|---|---|
+| `testmate-front-end` | 前端網頁應用 | `../testmate-front-end` |
+| `testmate-back-end` | 後端 API 服務 | `../testmate-back-end` |
+| `testmate-infra` | 基礎設施與部署設定 | `../testmate-infra` |
+| `testmate-meta` | 協調層（本 repo） | `.` |
+
+
+
+## 運作方式
+
+- **指向實際檔案位置**：
+  - 實際檔案留在同層的 `~/Developer/Chelsea/`；本層不建立鏡像，透過相對路徑 `../<member>` 存取
+- **命名規則**：
+  - 成員是 `testmate-<token>`、本層是 `testmate-meta`
+  - 新成員不需額外接線，依同樣規則用 `../testmate-<token>` 存取即可
+- **VS Code workspace**：
+  - `testmate.code-workspace` 放在上一層的 `~/Developer/Chelsea/`，把成員並列成 multi-root
+  - 它不進版控，因為上一層資料夾不屬於任何單一 repo
+  - 新增成員時，這份檔案要跟本層的 `CLAUDE.md`、`README.md` 一起改
+- **git ceremony**：
+  - 走共用 `*-meta` ceremony（subject-only commit）
+
+
+
+## 判斷準則
+
+- **以實際工作流為準**：
+  - 本層優先服務維護者的實際使用情境
+  - 固定的個人偏好與中文 README 也依此原則保留
+- **git／remote／可見性由各成員自行決定**：
+  - 本層不追蹤這些狀態
+- **先完成目前需要的版本**：
+  - 依目前需求建立可用版本，後續再視成員數量與使用方式調整

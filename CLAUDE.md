@@ -1,0 +1,51 @@
+# CLAUDE.md — testmate-meta
+
+The **coordination layer** for the `testmate` family: a meta repo that sits above several independent sibling projects. It exists so that an agent working here gets the *whole* picture across them at once, governed by shared norms — instead of editing one blind to the others.
+
+It holds coordination docs, not project content. Each member is its own repo with its own lifecycle; this layer never holds their files.
+
+> This layer follows the shared `*-meta` git ceremony — subject-only commits.
+
+## The family
+
+This is a **mixed family**: the members are different kinds of thing, united by owner / theme rather than a shared structural type. Don't assume symmetry between them — each documents itself in its own `README.md`; read that before working there (the table below is a pointer, not a catalog, and it rots).
+
+Members, all siblings under `~/Developer/Chelsea/` — reach them at `../<member>`:
+
+| repo | what it is | path |
+|---|---|---|
+| `testmate-front-end` | Frontend web app | `../testmate-front-end` |
+| `testmate-back-end` | Backend API service | `../testmate-back-end` |
+| `testmate-infra` | Infrastructure and deployment configuration | `../testmate-infra` |
+| `testmate-meta` | Coordination layer (this repo) | `.` |
+
+## Why this layer exists
+
+- **Coordinate without a monorepo.** The members are coupled (they change together, share norms) but must stay independent repos — each linkable and ownable on its own. A monorepo would bind them architecturally; a meta layer coordinates them without that cost.
+- **Give the AI the full picture.** Working one member blind to the others drifts. Running coordination from here — with this file and the siblings in view — is the anti-drift mechanism, by context and norms rather than check scripts.
+- **A reusable pattern.** The same "meta layer over N independent repos" shape carries to any other cluster of coupled repos.
+
+## How the family is wired
+
+- **Pointer, not container.** This layer points at the member repos; it never holds their files. The real repos sit beside it under `~/Developer/Chelsea/` (the single source of truth); they are **not** mirrored in-tree here — reach them at the relative path `../<member>`.
+- **Naming.** Members are `testmate-<token>`; this layer is `testmate-meta`. A new member needs no wiring here — reach it at `../testmate-<token>` like the rest.
+- **The workspace.** `testmate.code-workspace` sits one level up in `~/Developer/Chelsea/` and lists every member as a VS Code root. It is **not** version-controlled — no repo owns that directory. Adding a member means editing it alongside the tables in this file and `README.md`.
+- **Git ceremony.** Follows the shared `*-meta` ceremony — subject-only Conventional Commits. The members share one git flow, decided for the family as a whole and never per repo.
+- **Provenance.** Per-member `LICENSE`. Each member owns its own git / remote / visibility setup; this layer does not track that state.
+
+## Working across the family
+
+- **The coupling rule.** A convention worth keeping in one member is often worth carrying to the others. When you touch shared structure in one, check whether the siblings want the same move.
+- **Run coordination from here.** This file loads only in `testmate-meta` sessions, so cross-member work should be driven from this layer — reach the siblings at `../<member>` (the workspace lists them too). Scope `Grep`/`Glob` to those sibling paths explicitly; a bare `.` search stays inside this repo and won't reach them. Commits still land in each real repo, never here.
+
+## Development flow
+
+- **The map.** `DECISIONS.md` is the current state: the decisions that hold, the rejected options, and the version table of the versions in progress. `GLOSSARY.md` holds the family's terms and their identifiers in code; specs, records, and code use them. `specs/` holds one spec per unit of work, frozen once its version ships — read a spec only when the version table points at it.
+- **Specification.** Load `sk-spec-planner` to turn settled decisions into a spec; it loads `sk-decision-griller` when the decisions are not settled, and writes the spec, the record, and the glossary here.
+- **Execution.** Load `sk-spec-implementer` with the spec's path. It starts the version through `sk-release-creator` when the release branch is missing, cuts the work branch, loads `sk-code-tester` first and `sk-code-reviewer` last, and lands the commit and the PR through `sk-commit-creator` and `sk-pr-creator`. A member's code lands in the member repo; the spec stays here.
+- **Exceptions.** None.
+
+## North star & judgment frame
+
+- **Personal-fit is the hard constraint.** These repos serve the maintainer's own workflow first; when fitting that workflow conflicts with outside reusability, personal-fit wins. Hard-coded preferences and Chinese READMEs are deliberate.
+- **Concrete and closed today, architecturally open tomorrow.** Ship one concrete thing, leave the architecture open. The cluster starts with its current members and neither precludes nor commits to more.
